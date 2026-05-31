@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-
+      
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,10 +33,12 @@ jobs:
     # 🔥 CONNECT TO GITOPS REPO
     - name: Clone GitOps Repo
       run: |
-        git clone https://${{ secrets.GITOPS_TOKEN }}@github.com/YOUR_USERNAME/gitops-repo.git
+        git clone https://kiran9871:${{ secrets.GITOPS_TOKEN }}@github.com/kiranz9871/flask-gitops-repo.git
 
     - name: Install yq
-      run: sudo snap install yq
+      run: |
+        sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+        sudo chmod +x /usr/bin/yq
 
     - name: Update Image Tag in GitOps Repo
       run: |
