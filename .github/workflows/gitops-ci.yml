@@ -33,7 +33,7 @@ jobs:
     # 🔥 CONNECT TO GITOPS REPO
     - name: Clone GitOps Repo
       run: |
-      git clone https://kiran9871:${{ secrets.GITOPS_TOKEN }}@github.com/kiranz9871/flask-gitops-repo.git gitops-repo
+        git clone 'https://kiran9871:${{ secrets.GITOPS_TOKEN }}@github.com/kiranz9871/flask-gitops-repo.git' gitops-repo
 
     - name: Install yq
       run: |
@@ -41,13 +41,13 @@ jobs:
         sudo chmod +x /usr/bin/yq
 
     - name: Update Image Tag in GitOps Repo
+      working-directory: gitops-repo/flask  # <--- Keeps you in the right folder for this step
       run: |
-        cd flask-gitops-repo/flask
         yq -i '.image.tag = strenv(VERSION)' values.yaml
 
     - name: Commit & Push
+      working-directory: gitops-repo        # <--- Keeps you in the right folder for this step
       run: |
-        cd flask-gitops-repo
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         git add .
