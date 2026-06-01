@@ -41,9 +41,12 @@ jobs:
         sudo chmod +x /usr/bin/yq
 
     - name: Update Image Tag in GitOps Repo
-      working-directory: gitops-repo/flask  # <--- Keeps you in the right folder for this step
+      working-directory: gitops-repo/flask
       run: |
-        yq -i '.image.tag = strenv(VERSION)' values.yaml
+        echo "VERSION is $VERSION"
+        yq -i ".image.tag = \"$VERSION\"" values.yaml
+        echo "After update:"
+        cat values.yaml
 
     - name: Commit & Push
       working-directory: gitops-repo        # <--- Keeps you in the right folder for this step
